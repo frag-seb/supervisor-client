@@ -1,5 +1,5 @@
 {
-  "name": "fragseb/supervisor-client",
+  "name": "frag-seb/supervisor-client",
   "description": "The php client for supervisor",
   "type": "library",
   "license": "MIT",
