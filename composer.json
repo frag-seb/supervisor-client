@@ -1,0 +1,33 @@
+{
+  "name": "fragseb/supervisor-client",
+  "description": "The php client for supervisor",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Jochen Mandl",
+      "email": "mandl.js@googlemail.com"
+    }
+  ],
+
+  "autoload": {
+    "psr-4": {
+      "FragSeb\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "FragSeb\\Supervisor\\Test\\": "tests/Supervisor/case/"
+    }
+  },
+
+
+  "require": {
+    "php": ">=7.0"
+  },
+
+  "require-dev": {
+    "phpunit/phpunit": "^5.0",
+    "mockery/mockery": "^0.9.8"
+  }
+}
