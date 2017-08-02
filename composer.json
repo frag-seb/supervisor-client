@@ -1,6 +1,7 @@
 {
   "name": "frag-seb/supervisor-client",
   "description": "The php client for supervisor",
+  "keywords": ["supervisor","api","client"],
   "type": "library",
   "license": "MIT",
   "authors": [
