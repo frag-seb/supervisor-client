@@ -1,5 +1,9 @@
 /.idea
 /bin
 /vendor
-/build
+
 composer.lock
+
+phpunit.phar
+coveralls.phar
+/build/

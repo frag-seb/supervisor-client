@@ -11,9 +11,9 @@ use FragSeb\Supervisor\Factory\ConnectorFactoryInterface;
 use FragSeb\Supervisor\Factory\ServerFactory;
 use FragSeb\Supervisor\Model\Server;
 use FragSeb\Supervisor\Registry\ServerRegistry;
+use FragSeb\Supervisor\Registry\ServerRegistryInterface;
 use FragSeb\Supervisor\Response\Response;
 use FragSeb\Supervisor\Response\ResponseInterface;
-use Mockery\Mock;
 use Mockery\MockInterface;
 
 /**
@@ -27,8 +27,14 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
      */
     private $manager;
 
+    /**
+     * @var ServerRegistryInterface
+     */
     private $registry;
 
+    /**
+     * @var MockInterface|ConnectorInterface
+     */
     private $connector;
 
     /**
