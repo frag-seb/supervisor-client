@@ -37,5 +37,5 @@ notifications:
 
 cache:
     directories:
-      - vendor
-      - $HOME/.cache/composer
+        - vendor
+        - $HOME/.cache/composer
