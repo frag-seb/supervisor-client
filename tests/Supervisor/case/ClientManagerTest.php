@@ -18,7 +18,7 @@ use Mockery\MockInterface;
 
 /**
  * @covers \FragSeb\Supervisor\ClientManager
- * @covers \FragSeb\Supervisor\ServerRegistry
+ * @covers \FragSeb\Supervisor\Registry\ServerRegistry
  */
 class ClientManagerTest extends \PHPUnit_Framework_TestCase
 {

@@ -8,7 +8,7 @@ use FragSeb\Supervisor\Registry\ServerRegistry;
 use FragSeb\Supervisor\Registry\ServerRegistryInterface;
 
 /**
- * @covers \FragSeb\Supervisor\ServerRegistry
+ * @covers \FragSeb\Supervisor\Registry\ServerRegistry
  */
 class ServerRegistryTest extends \PHPUnit_Framework_TestCase
 {
