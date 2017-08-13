@@ -86,13 +86,29 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
             ->andReturn(new Response('getAPIVersion', 3.3))
         ;
 
+        /** @var ResponseInterface $response */
         $response = $this->manager->getAPIVersion();
 
-        static::assertArrayHasKey('master', $response);
-
-        $response = array_shift($response['master']);
         static::assertInstanceOf(ResponseInterface::class, $response);
-        static::assertEquals(3.3, $response->getContent());
+
+        $content = $response->getContent();
+        static::assertArrayHasKey('master', $content);
+        static::assertEquals(3.3, array_shift($content['master']));
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testCallWithWrongResponse()
+    {
+        $this
+            ->clientMock
+            ->shouldReceive('getAPIVersion')
+            ->andReturn(new \stdClass('getAPIVersion', 3.3))
+        ;
+
+        /** @var ResponseInterface $response */
+        $response = $this->manager->getAPIVersion();
     }
 
     /**

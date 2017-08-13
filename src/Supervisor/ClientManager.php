@@ -4,6 +4,7 @@ namespace FragSeb\Supervisor;
 
 use FragSeb\Supervisor\Client\ClientInterface;
 use FragSeb\Supervisor\Client\ClientRegistryInterface;
+use FragSeb\Supervisor\Response\Response;
 use FragSeb\Supervisor\Response\ResponseInterface;
 
 class ClientManager implements ManagerInterface
@@ -24,14 +25,9 @@ class ClientManager implements ManagerInterface
     }
 
     /**
-     * @method getState
-     *
-     * @param $method
-     * @param $args
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function __call($method, $args)
+    public function __call(string $method, $args): ResponseInterface
     {
         $processes = [];
         foreach ($this->registry->getAll() as $identifier => $client) {
@@ -39,10 +35,16 @@ class ClientManager implements ManagerInterface
                 throw new \RuntimeException();
             }
 
-            $processes[$identifier][] = call_user_func_array([$client, $method], $args);
+            $response = call_user_func_array([$client, $method], $args);
+
+            if (!$response instanceof ResponseInterface) {
+                throw new \RuntimeException();
+            }
+
+            $processes[$identifier][] = $response->getContent();
         }
 
-        return $processes;
+        return new Response($method, $processes);
     }
 
     /**

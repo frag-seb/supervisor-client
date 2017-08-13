@@ -26,6 +26,7 @@ script:
 
 after_success:
     - travis_retry php vendor/bin/coveralls
+    - travis_retry php vendor/bin/coveralls -v
 
 branches:
     only: master
