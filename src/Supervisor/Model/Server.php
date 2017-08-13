@@ -9,12 +9,17 @@ class Server
     /**
      * @var string
      */
-    private $id;
+    private $identifier;
 
     /**
      * @var string
      */
-    private $host = self::DEFAULT_HOST;
+    private $name;
+
+    /**
+     * @var string
+     */
+    private $host;
 
     /**
      * @var array
@@ -24,13 +29,15 @@ class Server
     /**
      * Constructor.
      *
-     * @param string $id
+     * @param        $identifier
+     * @param        $name
      * @param string $host
      * @param array  $auth
      */
-    public function __construct($id, string $host, array $auth)
+    public function __construct($identifier, $name, string $host, array $auth)
     {
-        $this->id = $id;
+        $this->identifier = $identifier;
+        $this->name = $name;
         $this->host = $host;
 
         $this->auth = $auth;
@@ -39,9 +46,17 @@ class Server
     /**
      * @return string
      */
-    public function getId(): string
+    public function getIdentifier(): string
     {
-        return $this->id;
+        return $this->identifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     /**
@@ -53,17 +68,17 @@ class Server
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getUsername(): string
+    public function getUsername()
     {
         return $this->auth['username'] ?? null;
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getPassword(): string
+    public function getPassword()
     {
         return $this->auth['password'] ?? null;
     }

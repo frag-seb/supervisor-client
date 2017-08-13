@@ -2,8 +2,10 @@
 
 namespace FragSeb\Supervisor\Model\DTO;
 
-class State
+final class State implements FactoryAwareInterface
 {
+    const METHOD_NAME = 'getState';
+
     const FATAL = 2;
     const RUNNING = 1;
     const RESTARTING = 0;
@@ -36,16 +38,16 @@ class State
     }
 
     /**
-     * @param array $response
+     * @param array $data
      *
-     * @return State
+     * @return self
      */
-    public static function createProcess(array $response): State
+    public static function create($data): self
     {
         $state = new self();
 
-        $state->statename = $response['statename'] ?? null;
-        $state->statecode = $response['statecode'] ?? null;
+        $state->statename = $data['statename'] ?? null;
+        $state->statecode = $data['statecode'] ?? null;
 
         return $state;
     }

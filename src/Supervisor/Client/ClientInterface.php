@@ -2,6 +2,8 @@
 
 namespace FragSeb\Supervisor\Client;
 
+use FragSeb\Supervisor\Response\ResponseInterface;
+
 interface ClientInterface
 {
     /**
@@ -35,7 +37,7 @@ interface ClientInterface
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.getPID
      *
-     * @return int
+     * @return ResponseInterface|ResponseInterface[]
      */
     public function getPID();
 

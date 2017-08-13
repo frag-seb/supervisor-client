@@ -3,6 +3,8 @@
 namespace FragSeb\Supervisor\Client;
 
 use FragSeb\Supervisor\Connector\ConnectorInterface;
+use FragSeb\Supervisor\Model\DTO\ModelBuilder;
+use FragSeb\Supervisor\Response\ResponseBuilderInterface;
 
 final class Client implements ClientInterface
 {
@@ -15,13 +17,20 @@ final class Client implements ClientInterface
     private $connector;
 
     /**
+     * @var ResponseBuilderInterface
+     */
+    private $builder;
+
+    /**
      * Constructor.
      *
-     * @param ConnectorInterface $connector
+     * @param ConnectorInterface       $connector
+     * @param ResponseBuilderInterface $builder
      */
-    public function __construct(ConnectorInterface $connector)
+    public function __construct(ConnectorInterface $connector, ResponseBuilderInterface $builder)
     {
         $this->connector = $connector;
+        $this->builder = $builder;
     }
 
     /**
@@ -29,10 +38,12 @@ final class Client implements ClientInterface
      */
     public function getAPIVersion()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -40,10 +51,12 @@ final class Client implements ClientInterface
      */
     public function getSupervisorVersion()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -51,10 +64,12 @@ final class Client implements ClientInterface
      */
     public function getIdentification()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -62,10 +77,12 @@ final class Client implements ClientInterface
      */
     public function getState()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -73,10 +90,12 @@ final class Client implements ClientInterface
      */
     public function getPID()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -84,10 +103,12 @@ final class Client implements ClientInterface
      */
     public function readLog($offset, $length = 0)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$offset, $length]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -95,10 +116,12 @@ final class Client implements ClientInterface
      */
     public function clearLog()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -106,10 +129,12 @@ final class Client implements ClientInterface
      */
     public function shutdown()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -117,10 +142,12 @@ final class Client implements ClientInterface
      */
     public function restart()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -128,10 +155,12 @@ final class Client implements ClientInterface
      */
     public function reloadConfig()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -139,10 +168,12 @@ final class Client implements ClientInterface
      */
     public function getProcessInfo(string $processName)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
-            $processName
+            [$processName]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -150,10 +181,12 @@ final class Client implements ClientInterface
      */
     public function getAllProcessInfo()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -161,10 +194,12 @@ final class Client implements ClientInterface
      */
     public function startAllProcesses($wait = true)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
-            $wait
+            [$wait]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -172,10 +207,12 @@ final class Client implements ClientInterface
      */
     public function startProcess($processName, $wait = true)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$processName, $wait]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -183,10 +220,12 @@ final class Client implements ClientInterface
      */
     public function startProcessGroup($groupName, $wait = true)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$groupName, $wait]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -194,10 +233,12 @@ final class Client implements ClientInterface
      */
     public function stopAllProcesses($wait = true)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$wait]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -205,10 +246,12 @@ final class Client implements ClientInterface
      */
     public function stopProcess($processName, $wait = true)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$processName, $wait]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -216,10 +259,12 @@ final class Client implements ClientInterface
      */
     public function stopProcessGroup($groupName, $wait = true)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$groupName, $wait]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -227,10 +272,12 @@ final class Client implements ClientInterface
      */
     public function sendProcessStdin($processName, $chars = 'utf-8')
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$processName, $chars]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -238,10 +285,12 @@ final class Client implements ClientInterface
      */
     public function sendRemoteCommEvent($eventType, $eventData)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$eventType, $eventData]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -249,10 +298,12 @@ final class Client implements ClientInterface
      */
     public function addProcessGroup($processName)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$processName]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -260,10 +311,12 @@ final class Client implements ClientInterface
      */
     public function removeProcessGroup($processName)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$processName]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -271,10 +324,12 @@ final class Client implements ClientInterface
      */
     public function readProcessStdoutLog($processName, $offset, $length)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$processName, $offset, $length]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -282,10 +337,12 @@ final class Client implements ClientInterface
      */
     public function readProcessStderrLog($processName, $offset, $length)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$processName, $offset, $length]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -293,10 +350,12 @@ final class Client implements ClientInterface
      */
     public function tailProcessStdoutLog($processName, $offset, $length)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$processName, $offset, $length]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -304,10 +363,12 @@ final class Client implements ClientInterface
      */
     public function tailProcessStderrLog($processName, $offset, $length)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$processName, $offset, $length]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -315,10 +376,12 @@ final class Client implements ClientInterface
      */
     public function clearProcessLogs($processName)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             [$processName]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -326,10 +389,12 @@ final class Client implements ClientInterface
      */
     public function clearAllProcessLogs()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -337,10 +402,12 @@ final class Client implements ClientInterface
      */
     public function listMethods()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::SYSTEM_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -348,10 +415,12 @@ final class Client implements ClientInterface
      */
     public function methodHelp($methodName)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::SYSTEM_NAMESPACE, __FUNCTION__),
             [$methodName]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -359,10 +428,12 @@ final class Client implements ClientInterface
      */
     public function methodSignature($methodSignature)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::SYSTEM_NAMESPACE, __FUNCTION__),
             [$methodSignature]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -370,10 +441,12 @@ final class Client implements ClientInterface
      */
     public function multicall(array $calls)
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::SYSTEM_NAMESPACE, __FUNCTION__),
             [$calls]
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 
     /**
@@ -381,9 +454,11 @@ final class Client implements ClientInterface
      */
     public function getAllConfigInfo()
     {
-        return $this->connector->call(
+        $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
             []
         );
+
+        return $this->builder->build(__FUNCTION__, $response);
     }
 }

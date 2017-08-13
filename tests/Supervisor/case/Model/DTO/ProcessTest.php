@@ -2,6 +2,7 @@
 
 namespace FragSeb\Supervisor\Test\Model\DTO;
 
+use FragSeb\Supervisor\Model\DTO\FactoryAwareInterface;
 use FragSeb\Supervisor\Model\DTO\Process;
 
 /**
@@ -9,12 +10,37 @@ use FragSeb\Supervisor\Model\DTO\Process;
  */
 class ProcessTest extends \PHPUnit_Framework_TestCase
 {
+    public function testIsInstanceOf()
+    {
+        $config = [
+            'description' => 'Exited too quickly (process log may have details)',
+            'pid' => 0,
+            'stderr_logfile' => '/var/test/customer_batch_send-7-stderr---supervisor-0kWqf6.log',
+            'stop' => 1502263849,
+            'logfile' => '/var/test/customer_batch_send-7-stdout---supervisor-oCXqsn.log',
+            'exitstatus' => 0,
+            'spawnerr' => 'Exited too quickly (process log may have details)',
+            'now' => 1502349416,
+            'group' => 'test-process',
+            'name' => 'test-7',
+            'statename' => 'FATAL',
+            'start' => 1502263848,
+            'state' => 200,
+            'stdout_logfile' => '/var/test/customer_batch_send-7-stdout---supervisor-oCXqsn.log',
+        ];
+        $processes = Process::create([$config]);
+
+        static::assertInstanceOf(FactoryAwareInterface::class, array_shift($processes));
+    }
+
     /**
      * @dataProvider dataProvider
      */
-    public function testGetPid($config, $isRunning, $uptime)
+    public function testGetter($config, $isRunning, $uptime)
     {
-        $process = Process::createProcess($config);
+        $processes = Process::create([$config]);
+
+        $process = array_shift($processes);
 
         static::assertEquals($config['pid'], $process->getPid());
         static::assertEquals($config['group'], $process->getGroup());

@@ -2,9 +2,10 @@
 
 namespace FragSeb\Supervisor\Test;
 
+use FragSeb\Supervisor\Factory\ServerFactory;
 use FragSeb\Supervisor\Model\Server;
-use FragSeb\Supervisor\ServerRegistry;
-use FragSeb\Supervisor\ServerRegistryInterface;
+use FragSeb\Supervisor\Registry\ServerRegistry;
+use FragSeb\Supervisor\Registry\ServerRegistryInterface;
 
 /**
  * @covers \FragSeb\Supervisor\ServerRegistry
@@ -35,7 +36,7 @@ class ServerRegistryTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $this->registry = new ServerRegistry($config);
+        $this->registry = new ServerRegistry($config, new ServerFactory());
     }
 
     public function testIsInstanceOf()

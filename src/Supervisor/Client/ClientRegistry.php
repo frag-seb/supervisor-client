@@ -2,11 +2,11 @@
 
 namespace FragSeb\Supervisor\Client;
 
-use FragSeb\Supervisor\Connector\XmlRpcConnector;
-use FragSeb\Supervisor\Serializer\XmlRpcSerializer;
-use FragSeb\Supervisor\ServerRegistryInterface;
+use FragSeb\Supervisor\Factory\ClientFactoryInterface;
+use FragSeb\Supervisor\Factory\ConnectorFactoryInterface;
+use FragSeb\Supervisor\Registry\ServerRegistryInterface;
 
-class ClientRegistry implements ClientRegistryInterface
+final class ClientRegistry implements ClientRegistryInterface
 {
     /**
      * @var array|Client[]
@@ -19,23 +19,40 @@ class ClientRegistry implements ClientRegistryInterface
     private $serverRegistry;
 
     /**
+     * @var ConnectorFactoryInterface
+     */
+    private $connectorFactory;
+
+    /**
+     * @var ClientFactoryInterface
+     */
+    private $clientFactory;
+
+    /**
      * Constructor.
      *
-     * @param ServerRegistryInterface $servers
+     * @param ServerRegistryInterface   $servers
+     * @param ConnectorFactoryInterface $connectorFactory
+     * @param ClientFactoryInterface  $clientFactory
      */
-    public function __construct(ServerRegistryInterface $servers)
-    {
+    public function __construct(
+        ServerRegistryInterface $servers,
+        ConnectorFactoryInterface $connectorFactory,
+        ClientFactoryInterface $clientFactory
+    ) {
         $this->serverRegistry = $servers;
+        $this->connectorFactory = $connectorFactory;
+        $this->clientFactory = $clientFactory;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function get($serverId): Client
+    public function get($serverId): ClientInterface
     {
         if (empty($this->clients[$serverId])) {
-            $connector = new XmlRpcConnector($this->serverRegistry->get($serverId), new XmlRpcSerializer());
-            $this->clients[$serverId] = new Client($connector);
+            $connector = $this->connectorFactory->create($this->serverRegistry->get($serverId));
+            $this->clients[$serverId] = $this->clientFactory->create($connector);
         }
 
         return $this->clients[$serverId];
@@ -47,13 +64,9 @@ class ClientRegistry implements ClientRegistryInterface
     public function getAll(): array
     {
         $result = [];
-
         foreach ($this->serverRegistry->getAll() as $server) {
-            if (empty($this->clients[$server->getId()])) {
-                $this->clients[$server->getId()] = new Client(new XmlRpcConnector($server, new XmlRpcSerializer()));
-            }
-
-            $result[$server->getId()] = $this->clients[$server->getId()];
+            $identifier = $server->getIdentifier();
+            $result[$identifier] = $this->get($identifier);
         }
 
         return $result;
