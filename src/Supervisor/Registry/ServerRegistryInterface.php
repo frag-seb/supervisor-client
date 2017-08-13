@@ -1,19 +1,19 @@
 <?php
 
-namespace FragSeb\Supervisor;
+namespace FragSeb\Supervisor\Registry;
 
 use FragSeb\Supervisor\Model\Server;
 
 interface ServerRegistryInterface
 {
     /**
-     * @param mixed $serverId
+     * @param mixed $identifier
      *
      * @return Server
      *
      * @throws \RuntimeException
      */
-    public function get($serverId): Server;
+    public function get($identifier): Server;
 
     /**
      * @return array|Server[]

@@ -2,11 +2,11 @@
 
 namespace FragSeb\Supervisor;
 
+use FragSeb\Supervisor\Client\ClientInterface;
 use FragSeb\Supervisor\Client\ClientRegistryInterface;
-use FragSeb\Supervisor\Model\DTO\Process;
-use FragSeb\Supervisor\Client\Client;
+use FragSeb\Supervisor\Response\ResponseInterface;
 
-class ClientManager
+class ClientManager implements ManagerInterface
 {
     /**
      * @var ClientRegistryInterface
@@ -24,29 +24,32 @@ class ClientManager
     }
 
     /**
-     * @return array|Process
+     * @method getState
+     *
+     * @param $method
+     * @param $args
+     *
+     * @return mixed
      */
-    public function getAllProcessInfo()
+    public function __call($method, $args)
     {
         $processes = [];
-        foreach ($this->registry->getAll() as $serverId => $client) {
-            $response = $client->getAllProcessInfo();
-
-            foreach ($response as $data) {
-                $processes[$serverId][] = Process::createProcess($data);
+        foreach ($this->registry->getAll() as $identifier => $client) {
+            if (!method_exists($client, $method)) {
+                throw new \RuntimeException();
             }
+
+            $processes[$identifier][] = call_user_func_array([$client, $method], $args);
         }
 
         return $processes;
     }
 
     /**
-     * @param $serverId
-     *
-     * @return Client
+     * {@inheritdoc}
      */
-    public function getClient($serverId)
+    public function getClient($identifier): ClientInterface
     {
-        return $this->registry->get($serverId);
+        return $this->registry->get($identifier);
     }
 }

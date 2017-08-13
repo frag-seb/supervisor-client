@@ -5,7 +5,13 @@ namespace FragSeb\Supervisor\Test\Client;
 use FragSeb\Supervisor\Client\Client;
 use FragSeb\Supervisor\Client\ClientRegistry;
 use FragSeb\Supervisor\Client\ClientRegistryInterface;
-use FragSeb\Supervisor\ServerRegistry;
+use FragSeb\Supervisor\Connector\ConnectorInterface;
+use FragSeb\Supervisor\Factory\ClientFactory;
+use FragSeb\Supervisor\Factory\ConnectorFactoryInterface;
+use FragSeb\Supervisor\Factory\ServerFactory;
+use FragSeb\Supervisor\Model\Server;
+use FragSeb\Supervisor\Registry\ServerRegistry;
+use FragSeb\Supervisor\Response\ResponseBuilder;
 
 /**
  * @covers \FragSeb\Supervisor\Client\ClientRegistry
@@ -36,7 +42,17 @@ class ClientRegistryTest extends \PHPUnit_Framework_TestCase
             ],
         ];
 
-        $this->registry = new ClientRegistry(new ServerRegistry($config));
+        $connectorFactory = \Mockery::mock(ConnectorFactoryInterface::class)
+            ->shouldReceive('create')
+            ->with(\Mockery::type(Server::class))
+            ->andReturn(\Mockery::mock(ConnectorInterface::class))
+            ->getMock()
+        ;
+
+        $serverRegistry = new ServerRegistry($config, new ServerFactory());
+        $clientFactory = new ClientFactory(new ResponseBuilder());
+
+        $this->registry = new ClientRegistry($serverRegistry, $connectorFactory, $clientFactory);
     }
 
     public function testIsInstanceOf()

@@ -12,9 +12,6 @@ final class XmlRpcSerializer implements SerializerInterface
     public function dencode($body)
     {
         $response = \xmlrpc_decode($body, 'utf-8');
-        if (is_array($response) && \xmlrpc_is_fault($response)) {
-            throw new SerializerException($response);
-        }
 
         return $response;
     }
