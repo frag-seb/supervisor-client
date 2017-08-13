@@ -10,7 +10,7 @@ use FragSeb\Supervisor\Response\ResponseBuilder;
 use FragSeb\Supervisor\Response\Services\ChainDataTransferObject;
 
 /**
- * @covers \FragSeb\Supervisor\Factory\ClientFactory
+ * @covers \FragSeb\Supervisor\Factory\ManagerFactory
  */
 class ManagerFactoryTest extends \PHPUnit_Framework_TestCase
 {
