@@ -7,12 +7,12 @@ interface ClientRegistryInterface
     /**
      * @param mixed $serverId
      *
-     * @return Client
+     * @return ClientInterface
      */
-    public function get($serverId): Client;
+    public function get($serverId): ClientInterface;
 
     /**
-     * @return array|Client[]
+     * @return array|ClientInterface[]
      */
     public function getAll(): array;
 }

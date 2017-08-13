@@ -2,8 +2,10 @@
 
 namespace FragSeb\Supervisor\Model\DTO;
 
-class Process
+class Process implements FactoryAwareInterface
 {
+    const METHOD_NAME = 'getAllProcessInfo';
+
     const STOPPED = 0;
     const STARTING = 10;
     const RUNNING = 20;
@@ -92,26 +94,32 @@ class Process
     }
 
     /**
-     * @param array $response
+     * @param array $data
      *
-     * @return Process
+     * @return array|Process[]
      */
-    public static function createProcess(array $response): Process
+    public static function create($data)
     {
-        $process = new self();
+        $processes = [];
 
-        $process->pid = $response['pid'] ?? null;
-        $process->name = $response['name'] ?? null;
-        $process->group = $response['group'] ?? null;
-        $process->statename = $response['statename'] ?? null;
-        $process->isRunning = (bool) (static::RUNNING === intval($response['state']));
+        foreach ($data as $process) {
+            $self = new self();
 
-        $start = \DateTime::createFromFormat('U', $response['start']);
-        $now = \DateTime::createFromFormat('U', $response['now']);
+            $self->pid = $process['pid'] ?? null;
+            $self->name = $process['name'] ?? null;
+            $self->group = $process['group'] ?? null;
+            $self->statename = $process['statename'] ?? null;
+            $self->isRunning = (bool) (static::RUNNING === intval($process['state'] ?? static::UNKNOWN));
 
-        $process->uptime = $start->diff($now)->format('%R%a days') ?? null;
+            $start = \DateTime::createFromFormat('U', $process['start']);
+            $now = \DateTime::createFromFormat('U', $process['now']);
 
-        return $process;
+            $self->uptime = $start->diff($now)->format('%R%a days');
+
+            $processes[] = $self;
+        }
+
+        return $processes;
     }
 
     /**

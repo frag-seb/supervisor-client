@@ -23,18 +23,29 @@ class ServerTest extends \PHPUnit_Framework_TestCase
     {
         $this->config = new \stdClass();
         $this->config->serverId = 'master';
+        $this->config->name = 'Foo Test Server';
         $this->config->host = 'http://127.0.0.1:9001/RPC2';
         $this->config->auth = [
             'username' => 'tester',
             'password' => 'test',
         ];
 
-        $this->server = new Server($this->config->serverId, $this->config->host, $this->config->auth);
+        $this->server = new Server(
+            $this->config->serverId,
+            $this->config->name,
+            $this->config->host,
+            $this->config->auth
+        );
     }
 
     public function testGetId()
     {
-        static::assertEquals($this->config->serverId, $this->server->getId());
+        static::assertEquals($this->config->serverId, $this->server->getIdentifier());
+    }
+
+    public function testGetName()
+    {
+        static::assertEquals($this->config->name, $this->server->getName());
     }
 
     public function testGetHost()

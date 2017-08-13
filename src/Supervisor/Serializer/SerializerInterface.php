@@ -10,8 +10,6 @@ interface SerializerInterface
      * @param $body
      *
      * @return array
-     *
-     * @throws SerializerException
      */
     public function dencode($body);
 

@@ -5,8 +5,25 @@ php:
     - 7.1
     - nightly
 
+matrix:
+  fast_finish: true
+
+sudo: false
+
+install:
+  - travis_retry composer install --no-interaction
+  - wget -c -nc --retry-connrefused --tries=0 https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+  - chmod +x coveralls.phar
+  - php coveralls.phar --version
+
 before_install:
     - composer install --prefer-source
+    - mkdir -p build/logs
+    - ls -al
 
 script:
-    - vendor/bin/phpunit --colors
+    - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+after_success:
+    - travis_retry php coveralls.phar -v
+    - bash <(curl -s https://codecov.io/bash)
