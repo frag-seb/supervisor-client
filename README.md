@@ -1,8 +1,10 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Build Status](https://travis-ci.org/frag-seb/supervisor-client.svg?branch=master)](https://travis-ci.org/frag-seb/supervisor-client)
 [![Coveralls](https://coveralls.io/repos/github/frag-seb/supervisor-client/badge.svg?branch=master)](https://coveralls.io/github/frag-seb/supervisor-client?branch=master)
-[![CodeCov](https://codecov.io/gh/frag-seb/supervisor-client/branch/master/graph/badge.svg)](https://codecov.io/gh/frag-seb/supervisor-cliente)
+[![codecov](https://codecov.io/gh/frag-seb/supervisor-client/branch/master/graph/badge.svg)](https://codecov.io/gh/frag-seb/supervisor-client)
 
+
+[![Total Downloads](https://poser.pugx.org/frag-seb/supervisor-client/downloads.png)](https://packagist.org/packages/frag-seb/supervisor-client)
 
 **Supervisor API Client**
 
