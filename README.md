@@ -14,6 +14,49 @@ ToDo:
 - etc.
 
 
+Example of a simple way to create a client manager.
+```php
+<?php
+
+
+use FragSeb\Supervisor\Factory\ManagerFactory;
+
+/** @var Composer\Autoload\ClassLoader $loader */
+$loader = require __DIR__.'/../vendor/autoload.php';
+
+$config = [
+    'master' => [
+        'host' => 'http://localhost:9001/RPC2',
+        'auth' => [
+            'username' => 'user',
+            'password' => 123
+        ]
+    ],
+    'slave' => [
+        'host' => 'http://localhost2:9001/RPC2',
+        'auth' => [
+            'username' => 'user',
+            'password' => 123
+        ]
+    ]
+];
+
+$factory = new ManagerFactory();
+
+$manager =  $factory->create($config);
+
+try {
+    $client = $manager;
+    
+    var_dump($client->getAllProcessInfo());
+} catch (\Exception $exception) {
+    echo 'message: ' . $exception->getMessage() . PHP_EOL;
+    echo 'code: ' . $exception->getCode() . PHP_EOL;
+    exit;
+}
+
+```
+
 Example for multi server call. 
 ```php
 <?php
@@ -22,7 +65,7 @@ use FragSeb\Supervisor\Factory\ClientFactory;
 use FragSeb\Supervisor\Factory\XmlRpcConnectorFactory;
 use FragSeb\Supervisor\Serializer\XmlRpcSerializer;
 use FragSeb\Supervisor\Registry\ServerRegistry;
-use FragSeb\Supervisor\Client\ClientRegistry;
+use FragSeb\Supervisor\Registry\ClientRegistry;
 use FragSeb\Supervisor\ClientManager;
 use FragSeb\Supervisor\Factory\ServerFactory;
 use FragSeb\Supervisor\Response\ResponseBuilder;
@@ -76,7 +119,7 @@ use FragSeb\Supervisor\Factory\ClientFactory;
 use FragSeb\Supervisor\Factory\XmlRpcConnectorFactory;
 use FragSeb\Supervisor\Serializer\XmlRpcSerializer;
 use FragSeb\Supervisor\Registry\ServerRegistry;
-use FragSeb\Supervisor\Client\ClientRegistry;
+use FragSeb\Supervisor\Registry\ClientRegistry;
 use FragSeb\Supervisor\ClientManager;
 use FragSeb\Supervisor\Factory\ServerFactory;
 use FragSeb\Supervisor\Response\ResponseBuilder;
@@ -112,49 +155,6 @@ $manager =  new ClientManager($clientRegistry);
 
 try {
     $client = $manager->getClient('master');
-    
-    var_dump($client->getAllProcessInfo());
-} catch (\Exception $exception) {
-    echo 'message: ' . $exception->getMessage() . PHP_EOL;
-    echo 'code: ' . $exception->getCode() . PHP_EOL;
-    exit;
-}
-
-```
-
-Example of a simple way to create a client manager.
-```php
-<?php
-
-
-use FragSeb\Supervisor\Factory\ManagerFactory;
-
-/** @var Composer\Autoload\ClassLoader $loader */
-$loader = require __DIR__.'/../vendor/autoload.php';
-
-$config = [
-    'master' => [
-        'host' => 'http://localhost:9001/RPC2',
-        'auth' => [
-            'username' => 'user',
-            'password' => 123
-        ]
-    ],
-    'slave' => [
-        'host' => 'http://localhost2:9001/RPC2',
-        'auth' => [
-            'username' => 'user',
-            'password' => 123
-        ]
-    ]
-];
-
-$factory = new ManagerFactory();
-
-$manager =  $factory->create($config);
-
-try {
-    $client = $manager;
     
     var_dump($client->getAllProcessInfo());
 } catch (\Exception $exception) {

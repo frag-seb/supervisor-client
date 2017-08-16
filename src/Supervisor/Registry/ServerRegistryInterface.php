@@ -2,6 +2,7 @@
 
 namespace FragSeb\Supervisor\Registry;
 
+use FragSeb\Supervisor\Exception\ServerInvalidArgumentException;
 use FragSeb\Supervisor\Model\Server;
 
 interface ServerRegistryInterface
@@ -11,7 +12,7 @@ interface ServerRegistryInterface
      *
      * @return Server
      *
-     * @throws \RuntimeException
+     * @throws ServerInvalidArgumentException
      */
     public function get($identifier): Server;
 

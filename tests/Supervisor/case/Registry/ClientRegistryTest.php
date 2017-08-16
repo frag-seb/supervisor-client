@@ -1,10 +1,10 @@
 <?php
 
-namespace FragSeb\Supervisor\Test\Client;
+namespace FragSeb\Supervisor\Test\Registry;
 
 use FragSeb\Supervisor\Client\Client;
-use FragSeb\Supervisor\Client\ClientRegistry;
-use FragSeb\Supervisor\Client\ClientRegistryInterface;
+use FragSeb\Supervisor\Registry\ClientRegistry;
+use FragSeb\Supervisor\Registry\ClientRegistryInterface;
 use FragSeb\Supervisor\Connector\ConnectorInterface;
 use FragSeb\Supervisor\Factory\ClientFactory;
 use FragSeb\Supervisor\Factory\ConnectorFactoryInterface;
@@ -14,7 +14,7 @@ use FragSeb\Supervisor\Registry\ServerRegistry;
 use FragSeb\Supervisor\Response\ResponseBuilder;
 
 /**
- * @covers \FragSeb\Supervisor\Client\ClientRegistry
+ * @covers \FragSeb\Supervisor\Registry\ClientRegistry
  */
 class ClientRegistryTest extends \PHPUnit_Framework_TestCase
 {

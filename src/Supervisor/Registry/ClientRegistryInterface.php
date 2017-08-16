@@ -1,6 +1,8 @@
 <?php
 
-namespace FragSeb\Supervisor\Client;
+namespace FragSeb\Supervisor\Registry;
+
+use FragSeb\Supervisor\Client\ClientInterface;
 
 interface ClientRegistryInterface
 {
