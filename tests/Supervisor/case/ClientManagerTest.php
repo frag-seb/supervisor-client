@@ -3,7 +3,8 @@
 namespace FragSeb\Supervisor\Test;
 
 use FragSeb\Supervisor\Client\ClientInterface;
-use FragSeb\Supervisor\Client\ClientRegistry;
+use FragSeb\Supervisor\Exception\ClientBadCallException;
+use FragSeb\Supervisor\Registry\ClientRegistry;
 use FragSeb\Supervisor\ClientManager;
 use FragSeb\Supervisor\Connector\ConnectorInterface;
 use FragSeb\Supervisor\Factory\ClientFactoryInterface;
@@ -97,7 +98,8 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException \FragSeb\Supervisor\Exception\ClientBadResponseException
+     * @expectedExceptionMessage The response form client is not allowed.
      */
     public function testCallWithWrongResponse()
     {
@@ -107,16 +109,16 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
             ->andReturn(new \stdClass('getAPIVersion', 3.3))
         ;
 
-        /** @var ResponseInterface $response */
-        $response = $this->manager->getAPIVersion();
+        $this->manager->getAPIVersion();
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException \FragSeb\Supervisor\Exception\ClientBadCallException
+     * @expectedExceptionMessage The given method does not exist.
      */
     public function testMagicMethodCallNotExsits()
     {
-        $response = $this->manager->getTest();
+        $this->manager->getTest();
     }
 
     public function testGetClient()

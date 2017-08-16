@@ -1,6 +1,6 @@
 <?php
 
-namespace FragSeb\Supervisor\Test;
+namespace FragSeb\Supervisor\Test\Registry;
 
 use FragSeb\Supervisor\Factory\ServerFactory;
 use FragSeb\Supervisor\Model\Server;
@@ -50,7 +50,7 @@ class ServerRegistryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException \FragSeb\Supervisor\Exception\ServerInvalidArgumentException
      * @expectedExceptionMessage The server with given id does not exists.
      */
     public function testServerNotExists()

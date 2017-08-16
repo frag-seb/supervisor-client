@@ -2,7 +2,8 @@
 
 namespace FragSeb\Supervisor\Factory;
 
-use FragSeb\Supervisor\Client\ClientRegistry;
+use FragSeb\Supervisor\Client\ClientInterface;
+use FragSeb\Supervisor\Registry\ClientRegistry;
 use FragSeb\Supervisor\ClientManager;
 use FragSeb\Supervisor\ManagerInterface;
 use FragSeb\Supervisor\Registry\ServerRegistry;
@@ -16,7 +17,7 @@ final class ManagerFactory implements ManagerFactoryInterface
      * @param array                         $config
      * @param ResponseBuilderInterface|null $responseBuilder
      *
-     * @return ManagerInterface
+     * @return ManagerInterface|ClientInterface
      */
     public function create(array $config, ResponseBuilderInterface $responseBuilder = null): ManagerInterface
     {

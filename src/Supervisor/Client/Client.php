@@ -3,8 +3,8 @@
 namespace FragSeb\Supervisor\Client;
 
 use FragSeb\Supervisor\Connector\ConnectorInterface;
-use FragSeb\Supervisor\Model\DTO\ModelBuilder;
 use FragSeb\Supervisor\Response\ResponseBuilderInterface;
+use FragSeb\Supervisor\Response\ResponseInterface;
 
 final class Client implements ClientInterface
 {
@@ -36,7 +36,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getAPIVersion()
+    public function getAPIVersion(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -49,7 +49,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getSupervisorVersion()
+    public function getSupervisorVersion(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -62,7 +62,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getIdentification()
+    public function getIdentification(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -75,7 +75,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getState()
+    public function getState(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -88,7 +88,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getPID()
+    public function getPID(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -101,7 +101,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function readLog($offset, $length = 0)
+    public function readLog(int $offset, int $length = 0): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -114,7 +114,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function clearLog()
+    public function clearLog(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -127,7 +127,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function shutdown()
+    public function shutdown(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -140,7 +140,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function restart()
+    public function restart(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -153,7 +153,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function reloadConfig()
+    public function reloadConfig(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -166,7 +166,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getProcessInfo(string $processName)
+    public function getProcessInfo(string $processName): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -179,7 +179,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllProcessInfo()
+    public function getAllProcessInfo(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -192,7 +192,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function startAllProcesses($wait = true)
+    public function startAllProcesses(bool $wait = true): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -205,7 +205,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function startProcess($processName, $wait = true)
+    public function startProcess(string $processName, bool $wait = true): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -218,7 +218,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function startProcessGroup($groupName, $wait = true)
+    public function startProcessGroup(string $groupName, bool $wait = true): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -231,7 +231,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function stopAllProcesses($wait = true)
+    public function stopAllProcesses(bool $wait = true): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -244,7 +244,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function stopProcess($processName, $wait = true)
+    public function stopProcess(string $processName, bool $wait = true): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -257,7 +257,21 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function stopProcessGroup($groupName, $wait = true)
+    public function restartProcess(string $processName, bool $wait = true): ResponseInterface
+    {
+        $content = [];
+        $response = $this->stopProcess($processName, $wait);
+        $content['stop'] = $response->getContent();
+        $response = $this->startProcess($processName, $wait);
+        $content['start'] = $response->getContent();
+
+        return $this->builder->build(__FUNCTION__, $content);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function stopProcessGroup(string $groupName, bool $wait = true): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -270,7 +284,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function sendProcessStdin($processName, $chars = 'utf-8')
+    public function sendProcessStdin(string $processName, string $chars = 'utf-8'): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -283,7 +297,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function sendRemoteCommEvent($eventType, $eventData)
+    public function sendRemoteCommEvent(string $eventType, string $eventData): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -296,7 +310,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function addProcessGroup($processName)
+    public function addProcessGroup(string $processName): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -309,7 +323,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function removeProcessGroup($processName)
+    public function removeProcessGroup(string $processName): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -322,7 +336,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function readProcessStdoutLog($processName, $offset, $length)
+    public function readProcessStdoutLog(string $processName, int $offset, int $length): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -335,7 +349,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function readProcessStderrLog($processName, $offset, $length)
+    public function readProcessStderrLog(string $processName, int $offset, int $length): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -348,7 +362,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function tailProcessStdoutLog($processName, $offset, $length)
+    public function tailProcessStdoutLog(string $processName, int $offset, int $length): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -361,7 +375,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function tailProcessStderrLog($processName, $offset, $length)
+    public function tailProcessStderrLog(string $processName, int $offset, int $length): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -374,7 +388,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function clearProcessLogs($processName)
+    public function clearProcessLogs(string $processName): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -387,7 +401,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function clearAllProcessLogs()
+    public function clearAllProcessLogs(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),
@@ -400,7 +414,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function listMethods()
+    public function listMethods(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::SYSTEM_NAMESPACE, __FUNCTION__),
@@ -413,7 +427,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function methodHelp($methodName)
+    public function methodHelp(string $methodName): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::SYSTEM_NAMESPACE, __FUNCTION__),
@@ -426,7 +440,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function methodSignature($methodSignature)
+    public function methodSignature(string $methodSignature): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::SYSTEM_NAMESPACE, __FUNCTION__),
@@ -439,7 +453,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function multicall(array $calls)
+    public function multicall(array $calls): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::SYSTEM_NAMESPACE, __FUNCTION__),
@@ -452,7 +466,7 @@ final class Client implements ClientInterface
     /**
      * {@inheritdoc}
      */
-    public function getAllConfigInfo()
+    public function getAllConfigInfo(): ResponseInterface
     {
         $response = $this->connector->call(
             sprintf('%s.%s', static::RPC_NAMESPACE, __FUNCTION__),

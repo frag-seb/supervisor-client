@@ -7,7 +7,7 @@ use FragSeb\Supervisor\Client\ClientInterface;
 use FragSeb\Supervisor\Connector\ConnectorInterface;
 use FragSeb\Supervisor\Response\ResponseBuilderInterface;
 
-class ClientFactory implements ClientFactoryInterface
+final class ClientFactory implements ClientFactoryInterface
 {
     /**
      * @var ResponseBuilderInterface

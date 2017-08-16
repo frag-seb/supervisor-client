@@ -2,6 +2,7 @@
 
 namespace FragSeb\Supervisor\Registry;
 
+use FragSeb\Supervisor\Exception\ServerInvalidArgumentException;
 use FragSeb\Supervisor\Factory\ServerFactoryInterface;
 use FragSeb\Supervisor\Model\Server;
 
@@ -47,7 +48,7 @@ final class ServerRegistry implements ServerRegistryInterface
     public function get($identifier): Server
     {
         if (!array_key_exists($identifier, $this->servers)) {
-            throw new \RuntimeException('The server with given id does not exists.');
+            throw new ServerInvalidArgumentException('The server with given id does not exists.');
         }
 
         return $this->servers[$identifier];

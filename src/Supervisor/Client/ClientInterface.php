@@ -9,37 +9,37 @@ interface ClientInterface
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.getAPIVersion
      *
-     * @return string
+     * @return ResponseInterface Content:string|array
      */
-    public function getAPIVersion();
+    public function getAPIVersion(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.getSupervisorVersion
      *
-     * @return string
+     * @return ResponseInterface Content:string|array
      */
-    public function getSupervisorVersion();
+    public function getSupervisorVersion(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.getIdentification
      *
-     * @return string
+     * @return ResponseInterface Content:string|array
      */
-    public function getIdentification();
+    public function getIdentification(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.getState
      *
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function getState();
+    public function getState(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.getPID
      *
-     * @return ResponseInterface|ResponseInterface[]
+     * @return ResponseInterface Content:int|array
      */
-    public function getPID();
+    public function getPID(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.readLog
@@ -47,62 +47,62 @@ interface ClientInterface
      * @param int $offset
      * @param int $length
      *
-     * @return string
+     * @return ResponseInterface Content:string|array
      */
-    public function readLog($offset, $length = 0);
+    public function readLog(int $offset, int $length = 0): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.clearLog
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function clearLog();
+    public function clearLog(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.shutdown
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function shutdown();
+    public function shutdown(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.restart
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function restart();
+    public function restart(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.reloadConfig
      *
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function reloadConfig();
+    public function reloadConfig(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.getProcessInfo
      *
      * @param $processName
      *
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function getProcessInfo(string $processName);
+    public function getProcessInfo(string $processName): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.getAllProcessInfo
      *
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function getAllProcessInfo();
+    public function getAllProcessInfo(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.startAllProcesses
      *
      * @param bool $wait
      *
-     * @return bool|array
+     * @return ResponseInterface Content:bool|array
      */
-    public function startAllProcesses($wait = true);
+    public function startAllProcesses(bool $wait = true): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.startProcess
@@ -110,28 +110,28 @@ interface ClientInterface
      * @param string $processName
      * @param bool   $wait
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function startProcess($processName, $wait = true);
+    public function startProcess(string $processName, bool $wait = true): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.startProcessGroup
      *
-     * @param string $groupName
-     * @param bool   $wait
+     * @param int|string $groupName
+     * @param bool       $wait
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function startProcessGroup($groupName, $wait = true);
+    public function startProcessGroup(string $groupName, bool $wait = true): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.stopAllProcesses
      *
      * @param bool $wait
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function stopAllProcesses($wait = true);
+    public function stopAllProcesses(bool $wait = true): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.stopProcess
@@ -139,9 +139,17 @@ interface ClientInterface
      * @param string $processName
      * @param bool   $wait
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function stopProcess($processName, $wait = true);
+    public function stopProcess(string $processName, bool $wait = true): ResponseInterface;
+
+    /**
+     * @param string $processName
+     * @param bool   $wait
+     *
+     * @return ResponseInterface Content:bool|array
+     */
+    public function restartProcess(string $processName, bool $wait = true): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.stopProcessGroup
@@ -149,9 +157,9 @@ interface ClientInterface
      * @param string $groupName
      * @param bool   $wait
      *
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function stopProcessGroup($groupName, $wait = true);
+    public function stopProcessGroup(string $groupName, bool $wait = true): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.sendProcessStdin
@@ -159,9 +167,9 @@ interface ClientInterface
      * @param string $processName
      * @param string $chars
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function sendProcessStdin($processName, $chars = 'utf-8');
+    public function sendProcessStdin(string $processName, string $chars = 'utf-8'): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.sendRemoteCommEvent
@@ -169,27 +177,27 @@ interface ClientInterface
      * @param string $eventType
      * @param string $eventData
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function sendRemoteCommEvent($eventType, $eventData);
+    public function sendRemoteCommEvent(string $eventType, string $eventData): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.addProcessGroup
      *
      * @param string $processName
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function addProcessGroup($processName);
+    public function addProcessGroup(string $processName): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.removeProcessGroup
      *
      * @param string $processName
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function removeProcessGroup($processName);
+    public function removeProcessGroup(string $processName): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.readProcessStdoutLog
@@ -198,9 +206,9 @@ interface ClientInterface
      * @param int    $offset
      * @param int    $length
      *
-     * @return string
+     * @return ResponseInterface Content:string|array
      */
-    public function readProcessStdoutLog($processName, $offset, $length);
+    public function readProcessStdoutLog(string $processName, int $offset, int $length): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.readProcessStderrLog
@@ -209,9 +217,9 @@ interface ClientInterface
      * @param int    $offset
      * @param int    $length
      *
-     * @return string
+     * @return ResponseInterface Content:string|array
      */
-    public function readProcessStderrLog($processName, $offset, $length);
+    public function readProcessStderrLog(string $processName, int $offset, int $length): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.tailProcessStdoutLog
@@ -220,9 +228,9 @@ interface ClientInterface
      * @param int    $offset
      * @param int    $length
      *
-     * @return mixed
+     * @return ResponseInterface Content:mixed
      */
-    public function tailProcessStdoutLog($processName, $offset, $length);
+    public function tailProcessStdoutLog(string $processName, int $offset, int $length): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.tailProcessStderrLog
@@ -231,62 +239,62 @@ interface ClientInterface
      * @param int    $offset
      * @param int    $length
      *
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function tailProcessStderrLog($processName, $offset, $length);
+    public function tailProcessStderrLog(string $processName, int $offset, int $length): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.clearProcessLogs
      *
      * @param string $processName
      *
-     * @return bool
+     * @return ResponseInterface Content:bool|array
      */
-    public function clearProcessLogs($processName);
+    public function clearProcessLogs(string $processName): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.rpcinterface.SupervisorNamespaceRPCInterface.clearAllProcessLogs
      *
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function clearAllProcessLogs();
+    public function clearAllProcessLogs(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.xmlrpc.SystemNamespaceRPCInterface.listMethods
      *
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function listMethods();
+    public function listMethods(): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.xmlrpc.SystemNamespaceRPCInterface.methodHelp
      *
-     * @param $methodName
+     * @param string $methodName
      *
-     * @return string
+     * @return ResponseInterface Content:string|array
      */
-    public function methodHelp($methodName);
+    public function methodHelp(string $methodName): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.xmlrpc.SystemNamespaceRPCInterface.methodSignature
      *
-     * @param $methodSignature
+     * @param string $methodSignature
      *
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function methodSignature($methodSignature);
+    public function methodSignature(string $methodSignature): ResponseInterface;
 
     /**
      * @see http://supervisord.org/api.html#supervisor.xmlrpc.SystemNamespaceRPCInterface.multicall
      *
      * @param array $calls
      *
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function multicall(array $calls);
+    public function multicall(array $calls): ResponseInterface;
 
     /**
-     * @return array
+     * @return ResponseInterface Content:array
      */
-    public function getAllConfigInfo();
+    public function getAllConfigInfo(): ResponseInterface;
 }

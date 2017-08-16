@@ -3,6 +3,8 @@
 namespace FragSeb\Supervisor;
 
 use FragSeb\Supervisor\Client\ClientInterface;
+use FragSeb\Supervisor\Exception\ClientBadCallException;
+use FragSeb\Supervisor\Exception\ClientBadResponseException;
 use FragSeb\Supervisor\Response\ResponseInterface;
 
 interface ManagerInterface
@@ -19,6 +21,9 @@ interface ManagerInterface
      * @param $args
      *
      * @return ResponseInterface
+     *
+     * @throws ClientBadCallException
+     * @throws ClientBadResponseException
      */
     public function __call(string $method, $args): ResponseInterface;
 }

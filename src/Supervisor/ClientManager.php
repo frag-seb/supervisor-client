@@ -3,7 +3,9 @@
 namespace FragSeb\Supervisor;
 
 use FragSeb\Supervisor\Client\ClientInterface;
-use FragSeb\Supervisor\Client\ClientRegistryInterface;
+use FragSeb\Supervisor\Exception\ClientBadResponseException;
+use FragSeb\Supervisor\Registry\ClientRegistryInterface;
+use FragSeb\Supervisor\Exception\ClientBadCallException;
 use FragSeb\Supervisor\Response\Response;
 use FragSeb\Supervisor\Response\ResponseInterface;
 
@@ -27,31 +29,35 @@ class ClientManager implements ManagerInterface
     /**
      * {@inheritdoc}
      */
+    public function getClient($identifier): ClientInterface
+    {
+        return $this->registry->get($identifier);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function __call(string $method, $args): ResponseInterface
     {
         $processes = [];
         foreach ($this->registry->getAll() as $identifier => $client) {
             if (!method_exists($client, $method)) {
-                throw new \RuntimeException();
+                throw new ClientBadCallException('The given method does not exist.');
             }
 
-            $response = call_user_func_array([$client, $method], $args);
-
-            if (!$response instanceof ResponseInterface) {
-                throw new \RuntimeException();
+            try {
+                $response = call_user_func_array([$client, $method], $args);
+            } catch (\Throwable $throwable) {
+                throw new ClientBadResponseException(
+                    'The response form client is not allowed.',
+                    $throwable->getCode(),
+                    $throwable
+                );
             }
 
             $processes[$identifier][] = $response->getContent();
         }
 
         return new Response($method, $processes);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getClient($identifier): ClientInterface
-    {
-        return $this->registry->get($identifier);
     }
 }

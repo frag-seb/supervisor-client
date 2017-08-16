@@ -1,10 +1,11 @@
 <?php
 
-namespace FragSeb\Supervisor\Client;
+namespace FragSeb\Supervisor\Registry;
 
+use FragSeb\Supervisor\Client\Client;
+use FragSeb\Supervisor\Client\ClientInterface;
 use FragSeb\Supervisor\Factory\ClientFactoryInterface;
 use FragSeb\Supervisor\Factory\ConnectorFactoryInterface;
-use FragSeb\Supervisor\Registry\ServerRegistryInterface;
 
 final class ClientRegistry implements ClientRegistryInterface
 {
@@ -33,7 +34,7 @@ final class ClientRegistry implements ClientRegistryInterface
      *
      * @param ServerRegistryInterface   $servers
      * @param ConnectorFactoryInterface $connectorFactory
-     * @param ClientFactoryInterface  $clientFactory
+     * @param ClientFactoryInterface    $clientFactory
      */
     public function __construct(
         ServerRegistryInterface $servers,
