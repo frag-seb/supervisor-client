@@ -94,7 +94,7 @@ class ClientManagerTest extends \PHPUnit_Framework_TestCase
 
         $content = $response->getContent();
         static::assertArrayHasKey('master', $content);
-        static::assertEquals(3.3, array_shift($content['master']));
+        static::assertEquals(3.3, $content['master']);
     }
 
     /**
