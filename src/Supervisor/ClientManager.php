@@ -55,7 +55,7 @@ class ClientManager implements ManagerInterface
                 );
             }
 
-            $processes[$identifier][] = $response->getContent();
+            $processes[$identifier] = $response->getContent();
         }
 
         return new Response($method, $processes);
